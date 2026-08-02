@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Orbitron:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import 'tailwindcss';
+
+:root {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: #ffffff;
+  background-color: #030706;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #030706;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 50% 20%, rgba(132, 227, 37, 0.08), transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(132, 227, 37, 0.05), transparent 35%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+::selection {
+  background: #84E325;
+  color: #030706;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.font-serif-tagline {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+}
+
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* Custom glowing effects */
+.glow-lime-btn {
+  background-color: #84E325;
+  color: #050805;
+  box-shadow: 0 0 25px rgba(132, 227, 37, 0.4);
+  transition: all 0.3s ease;
+}
+
+.glow-lime-btn:hover {
+  background-color: #92ee36;
+  box-shadow: 0 0 35px rgba(132, 227, 37, 0.65);
+  transform: translateY(-2px);
+}
+
+.glow-card {
+  background: rgba(13, 18, 14, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(132, 227, 37, 0.15);
+  transition: all 0.3s ease;
+}
+
+.glow-card:hover {
+  border-color: rgba(132, 227, 37, 0.4);
+  box-shadow: 0 0 30px rgba(132, 227, 37, 0.12);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #030706;
+}
+::-webkit-scrollbar-thumb {
+  background: #1a291c;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #84E325;
+}
+
