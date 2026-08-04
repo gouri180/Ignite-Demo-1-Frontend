@@ -205,7 +205,7 @@ function CountdownTimer({ targetDate }: { targetDate: string }) {
           <span className="relative inline-flex h-2 w-2 rounded-full bg-[#84E325]"></span>
         </span>
         <span className="font-orbitron text-[10px] font-bold uppercase tracking-[0.2em] text-[#84E325] truncate">
-          Registration Closes July 31, 2026
+          Registration Closes Sep 5, 2026
         </span>
       </div>
 
@@ -249,9 +249,6 @@ export function App() {
     members: '1',
     category: 'School Student',
     institutionName: '',
-    domain: 'Healthcare',
-    problemStatement: '',
-    abstract: '',
   })
 
   const [teamMembers, setTeamMembers] = useState([
@@ -409,9 +406,6 @@ export function App() {
         members: '1',
         category: 'School Student',
         institutionName: '',
-        domain: 'Healthcare',
-        problemStatement: '',
-        abstract: '',
       })
       setTeamMembers([
         { name: '', phone: '', email: '' },
@@ -443,10 +437,7 @@ export function App() {
       members: formData.members,
       teamMembers: activeTeamMembers,
       category: formData.category,
-      institutionName: formData.institutionName,
-      domain: formData.domain,
-      problemStatement: formData.problemStatement,
-      abstract: formData.abstract
+      institutionName: formData.institutionName
     }
 
     let responseData: { success?: boolean; message?: string } | null = null;
@@ -469,16 +460,82 @@ export function App() {
       return
     }
 
-    setIsSubmitting(false)
-
     if (responseData && responseData.success === false) {
+      setIsSubmitting(false)
       setFormError(responseData.message || 'Registration failed. Please check your details.')
       return
     }
 
-    // Success! Clear error & trigger morphing success popup card
-    setFormError(null)
-    setRegisteredSuccess(true)
+    try {
+      const orderRes = await fetch(`${API_URL}/create-order`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email, amount: 499 })
+      })
+      const orderData = await orderRes.json()
+
+      if (!orderData.success) {
+        setIsSubmitting(false)
+        setFormError(orderData.message || 'Could not start payment. Please try again.')
+        return
+      }
+
+      const options = {
+        key: orderData.key,
+        amount: orderData.order.amount,
+        currency: orderData.order.currency,
+        name: 'IGNITE 2.0',
+        description: 'Registration Fee',
+        order_id: orderData.order.id,
+        prefill: {
+          name: formData.leaderName,
+          email: formData.email,
+          contact: formData.phone
+        },
+        theme: { color: '#84E325' },
+        handler: async function (response: {
+          razorpay_order_id: string
+          razorpay_payment_id: string
+          razorpay_signature: string
+        }) {
+          try {
+            const verifyRes = await fetch(`${API_URL}/verify-payment`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                email: formData.email,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature
+              })
+            })
+            const verifyData = await verifyRes.json()
+            if (verifyData.success) {
+              setFormError(null)
+              setRegisteredSuccess(true)
+            } else {
+              setFormError('Payment could not be verified. Please contact support with your payment ID.')
+            }
+          } catch {
+            setFormError('Payment verification failed. Please contact support.')
+          } finally {
+            setIsSubmitting(false)
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            setIsSubmitting(false)
+          }
+        }
+      }
+
+      // @ts-expect-error Razorpay is loaded globally via checkout.js script tag
+      const rzp = new window.Razorpay(options)
+      rzp.open()
+    } catch {
+      setIsSubmitting(false)
+      setFormError('Could not start payment. Please check your connection and try again.')
+    }
   }
 
   return (
@@ -680,7 +737,7 @@ export function App() {
             </motion.div>
 
             {/* Countdown Timer */}
-            <CountdownTimer targetDate="2026-07-31T23:59:59+05:30" />
+            <CountdownTimer targetDate="2026-09-05T23:59:59+05:30" />
           </div>
         </section>
 
@@ -773,6 +830,21 @@ export function App() {
                   ₹10,000
                 </motion.h2>
               </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="mt-10 flex justify-center relative z-20"
+              >
+                <button
+                  type="button"
+                  onClick={() => setIsRegisterOpen(true)}
+                  className="glow-lime-btn rounded-full px-8 py-3.5 text-xs font-extrabold uppercase tracking-[0.18em] cursor-pointer"
+                >
+                  REGISTER NOW
+                </button>
+              </motion.div>
             </div>
           </Reveal>
         </section>
@@ -1539,6 +1611,10 @@ export function App() {
                       </h3>
                       <p className="mt-2 text-xs text-[#9EB09E] leading-relaxed max-w-sm mx-auto">
                         We've registered your team and sent your official event pass to <strong className="text-[#84E325]">{formData.email || 'your email'}</strong>.
+                        <br />
+                        <span className="text-[11px] mt-3 inline-block rounded-md bg-[#84E325]/10 border border-[#84E325]/20 px-3 py-1.5 text-[#84E325] font-medium">
+                          Note: Please do check your spam folder if you didn't receive the mail.
+                        </span>
                       </p>
                     </motion.div>
 
@@ -1550,84 +1626,10 @@ export function App() {
                     >
                       <button
                         type="button"
-                        onClick={async () => {
-                          setFormError(null)
-                          try {
-                            const orderRes = await fetch(`${API_URL}/create-order`, {
-                              method: 'POST',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({ email: formData.email, amount: 499 })
-                            })
-                            const orderData = await orderRes.json()
-
-                            if (!orderData.success) {
-                              setFormError(orderData.message || 'Could not start payment. Please try again.')
-                              return
-                            }
-
-                            const options = {
-                              key: orderData.key,
-                              amount: orderData.order.amount,
-                              currency: orderData.order.currency,
-                              name: 'IGNITE 2.0',
-                              description: 'Registration Fee',
-                              order_id: orderData.order.id,
-                              prefill: {
-                                name: formData.leaderName,
-                                email: formData.email,
-                                contact: formData.phone
-                              },
-                              theme: { color: '#84E325' },
-                              handler: async function (response: {
-                                razorpay_order_id: string
-                                razorpay_payment_id: string
-                                razorpay_signature: string
-                              }) {
-                                try {
-                                  const verifyRes = await fetch(`${API_URL}/verify-payment`, {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({
-                                      email: formData.email,
-                                      razorpay_order_id: response.razorpay_order_id,
-                                      razorpay_payment_id: response.razorpay_payment_id,
-                                      razorpay_signature: response.razorpay_signature
-                                    })
-                                  })
-                                  const verifyData = await verifyRes.json()
-                                  if (verifyData.success) {
-                                    handleReturnToHome()
-                                  } else {
-                                    setFormError('Payment could not be verified. Please contact support with your payment ID.')
-                                  }
-                                } catch {
-                                  setFormError('Payment verification failed. Please contact support.')
-                                }
-                              },
-                              modal: {
-                                ondismiss: function () {
-                                  // User closed the popup without paying; no action needed
-                                }
-                              }
-                            }
-
-                            // @ts-expect-error Razorpay is loaded globally via checkout.js script tag
-                            const rzp = new window.Razorpay(options)
-                            rzp.open()
-                          } catch {
-                            setFormError('Could not start payment. Please check your connection and try again.')
-                          }
-                        }}
+                        onClick={handleReturnToHome}
                         className="glow-lime-btn rounded-xl px-8 py-3.5 text-xs font-bold uppercase tracking-widest cursor-pointer transition-all duration-300 hover:scale-105 bg-[#84E325] text-black shadow-[0_0_20px_rgba(132,227,37,0.4)]"
                       >
-                        Pay with Razorpay
-                      </button>
-                      <button
-                        type="button"
-                        onClick={handleReturnToHome}
-                        className="rounded-xl px-8 py-3.5 text-xs font-bold uppercase tracking-widest cursor-pointer transition-all duration-300 hover:bg-white/10 border border-white/20 text-white"
-                      >
-                        Pay Later
+                        Return to Home
                       </button>
                     </motion.div>
                   </motion.div>
@@ -1717,9 +1719,13 @@ export function App() {
                               <input
                                 type="tel"
                                 required
+                                maxLength={10}
                                 value={formData.phone}
-                                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                                placeholder="+91 9876543210"
+                                onChange={(e) => {
+                                  const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                                  setFormData({ ...formData, phone: val });
+                                }}
+                                placeholder="9876543210"
                                 className="w-full rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-base text-white placeholder-gray-500 focus:border-[#84E325] focus:outline-none"
                               />
                             </div>
@@ -1785,6 +1791,10 @@ export function App() {
                                   setFormError('Please fill out all required team details.');
                                   return;
                                 }
+                                if (formData.phone.length !== 10) {
+                                  setFormError('Please enter a valid 10-digit phone number for the leader.');
+                                  return;
+                                }
                                 if (formData.category !== 'Others' && !formData.institutionName.trim()) {
                                   setFormError(`Please enter your ${formData.category === 'School Student' ? 'School' : formData.category === 'Organisation' ? 'Company' : 'College'} Name.`);
                                   return;
@@ -1828,10 +1838,12 @@ export function App() {
                                     <input
                                       type="tel"
                                       required
+                                      maxLength={10}
                                       value={member.phone}
                                       onChange={(e) => {
+                                        const val = e.target.value.replace(/\D/g, '').slice(0, 10);
                                         const newMembers = [...teamMembers];
-                                        newMembers[index].phone = e.target.value;
+                                        newMembers[index].phone = val;
                                         setTeamMembers(newMembers);
                                       }}
                                       placeholder="Phone Number"
@@ -1872,12 +1884,17 @@ export function App() {
                                   setFormError('Please fill out all team member details.');
                                   return;
                                 }
+                                const isPhoneValid = membersToValidate.every(m => m.phone.length === 10);
+                                if (!isPhoneValid) {
+                                  setFormError('Please enter valid 10-digit phone numbers for all team members.');
+                                  return;
+                                }
                                 setFormError(null);
                                 setFormStep(3);
                               }}
                               className="w-2/3 rounded-xl py-4 text-sm font-bold uppercase tracking-widest transition-all glow-lime-btn cursor-pointer hover:scale-[1.02]"
                             >
-                              Next: Idea Details
+                              Next
                             </button>
                           </div>
                         </>
@@ -1887,50 +1904,7 @@ export function App() {
                         <>
 
 
-                          <div>
-                            <label className="block text-xs font-semibold tracking-wider text-gray-300 mb-2">
-                              Domain
-                            </label>
-                            <select
-                              value={formData.domain}
-                              onChange={(e) => setFormData({ ...formData, domain: e.target.value })}
-                              className="w-full rounded-xl border border-white/10 bg-[#0d180f] px-5 py-3 text-base text-white focus:border-[#84E325] focus:outline-none"
-                            >
-                              <option value="Healthcare">Healthcare</option>
-                              <option value="Education">Education</option>
-                              <option value="Defence">Defence</option>
-                              <option value="Space Technology">Space Technology</option>
-                              <option value="Tribal Communities & Development">Tribal Communities & Development</option>
-                            </select>
-                          </div>
 
-                          <div>
-                            <label className="block text-xs font-semibold tracking-wider text-gray-300 mb-2">
-                              Problem Statement
-                            </label>
-                            <textarea
-                              required
-                              rows={2}
-                              value={formData.problemStatement}
-                              onChange={(e) => setFormData({ ...formData, problemStatement: e.target.value })}
-                              placeholder="Briefly describe the problem you are solving"
-                              className="w-full rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-base text-white placeholder-gray-500 focus:border-[#84E325] focus:outline-none resize-none"
-                            ></textarea>
-                          </div>
-
-                          <div>
-                            <label className="block text-xs font-semibold tracking-wider text-gray-300 mb-2">
-                              Abstract of the Idea
-                            </label>
-                            <textarea
-                              required
-                              rows={3}
-                              value={formData.abstract}
-                              onChange={(e) => setFormData({ ...formData, abstract: e.target.value })}
-                              placeholder="Provide an abstract of your proposed idea/solution"
-                              className="w-full rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-base text-white placeholder-gray-500 focus:border-[#84E325] focus:outline-none resize-none"
-                            ></textarea>
-                          </div>
 
                           {/* Terms and Conditions Checkbox */}
                           <div className="pt-2 flex items-start space-x-3">
@@ -1966,9 +1940,12 @@ export function App() {
                             <button
                               type="submit"
                               disabled={isSubmitting}
-                              className="w-2/3 rounded-xl py-4 text-sm font-bold uppercase tracking-widest transition-all glow-lime-btn cursor-pointer hover:scale-[1.02]"
+                              className={`w-2/3 rounded-xl px-5 py-3.5 text-sm font-bold uppercase tracking-wider transition-all duration-300 ${isSubmitting
+                                ? 'bg-[#84E325]/50 text-black/50 cursor-not-allowed'
+                                : 'glow-lime-btn bg-[#84E325] text-black cursor-pointer hover:scale-[1.02]'
+                                }`}
                             >
-                              {isSubmitting ? 'Submitting...' : 'Submit (₹499)'}
+                              {isSubmitting ? 'Processing...' : 'Submit and Pay ₹499'}
                             </button>
                           </div>
                         </>
