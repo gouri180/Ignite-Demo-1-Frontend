@@ -315,16 +315,12 @@ export function App() {
       a: 'The registration fee is ₹499 per team of 1-4 members covering Round 01 evaluation and finale entry.',
     },
     {
-      q: 'Will there be mentors available?',
-      a: 'Yes, industry experts and experienced professionals will be mentoring teams during the 36-hour onsite hackathon to help refine and build your prototypes.',
+      q: 'When is the grand finale scheduled to take place?',
+      a: 'The final round of the competition is currently scheduled to take place by the end of September. Exact dates and detailed itineraries will be communicated to all shortlisted teams well in advance.',
     },
     {
-      q: 'What should we bring to the onsite hackathon?',
-      a: 'You should bring your laptops, chargers, any specific hardware modules required for your prototype, and your student IDs.',
-    },
-    {
-      q: 'What should we bring to the onsite hackathon?',
-      a: 'You should bring your laptops, chargers, any specific hardware modules required for your prototype, and your student IDs.',
+      q: 'What is the designated venue for the ideathon finale?',
+      a: 'The grand finale will be hosted in the vibrant city of Kochi. Comprehensive details regarding the specific venue and accommodations will be shared with the finalists closer to the event date.',
     },
   ]
 
@@ -664,7 +660,7 @@ export function App() {
         {/* HERO SECTION */}
         <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 pt-20 text-center sm:px-6 lg:px-8">
           {/* Topology 3D Background */}
-          <div className="absolute inset-0 opacity-40">
+          <div className="hidden md:block absolute inset-0 opacity-40">
             <VantaTopologyHero />
           </div>
 

@@ -79,10 +79,16 @@ h1, h2, h3, h4 {
 }
 
 .glow-card {
-  background: rgba(13, 18, 14, 0.75);
-  backdrop-filter: blur(12px);
+  background: rgba(13, 18, 14, 0.95);
   border: 1px solid rgba(132, 227, 37, 0.15);
   transition: all 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .glow-card {
+    background: rgba(13, 18, 14, 0.75);
+    backdrop-filter: blur(12px);
+  }
 }
 
 .glow-card:hover {

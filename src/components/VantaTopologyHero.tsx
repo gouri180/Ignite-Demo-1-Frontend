@@ -61,7 +61,7 @@ const lines = [
 
 export function VantaTopologyHero({ className = '' }: VantaTopologyHeroProps) {
   return (
-    <div className={`absolute inset-0 overflow-hidden ${className}`}>
+    <div className={`vanta-topology absolute inset-0 overflow-hidden ${className}`}>
       <style>{`
         @keyframes topologyFloat {
           0% { transform: translate3d(0, 0, 0) scale(1); }
@@ -85,6 +85,18 @@ export function VantaTopologyHero({ className = '' }: VantaTopologyHeroProps) {
           60% { opacity: 0.24; transform: scale(1.16); }
           100% { opacity: 0; transform: scale(1.34); }
         }
+
+        @media (max-width: 767px), (prefers-reduced-motion: reduce) {
+          .vanta-topology svg, 
+          .vanta-topology line, 
+          .vanta-topology circle, 
+          .vanta-topology g {
+            animation: none !important;
+          }
+          .vanta-topology [filter] {
+            filter: none !important;
+          }
+        }
       `}</style>
 
       <svg
@@ -100,7 +112,7 @@ export function VantaTopologyHero({ className = '' }: VantaTopologyHeroProps) {
           </linearGradient>
 
           <filter id="neuralGlow" x="-90%" y="-90%" width="280%" height="280%">
-            <feGaussianBlur stdDeviation="10" result="blur" />
+            <feGaussianBlur stdDeviation="5" result="blur" />
             <feColorMatrix
               in="blur"
               type="matrix"

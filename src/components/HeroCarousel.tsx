@@ -160,7 +160,7 @@ export function HeroCarousel({ slides = defaultSlides, autoPlayInterval = 5000 }
               <div className="absolute inset-0 bg-gradient-to-tr from-black/80 via-black/20 to-transparent" />
 
               {/* Frosted Glass Overlay Card (Bottom-Left) */}
-              <div className="absolute bottom-6 left-6 right-6 sm:right-auto sm:max-w-md lg:max-w-lg rounded-3xl border border-white/15 bg-[#121614]/40 p-6 sm:p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
+              <div className="absolute bottom-6 left-6 right-6 sm:right-auto sm:max-w-md lg:max-w-lg rounded-3xl border border-white/15 bg-[#121614]/90 sm:bg-[#121614]/40 p-6 sm:p-8 sm:backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
                 <span className="font-orbitron text-xs font-bold tracking-widest text-[#84E325]">
                   {slide.tag}
                 </span>
