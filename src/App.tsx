@@ -361,7 +361,7 @@ export function App() {
     {
       num: '1',
       title: 'Register Team',
-      desc: 'Form your team of 2-5 members and sign up.',
+      desc: 'Form your team of 1-4 members and sign up.',
     },
     {
       num: '2',
@@ -371,7 +371,7 @@ export function App() {
     {
       num: '3',
       title: 'Shortlisting',
-      desc: 'Top selected teams get invited to the 36-hour onsite hackathon.',
+      desc: 'The selected teams get invited to the Grand Finale.',
     },
     {
       num: '4',
@@ -760,7 +760,7 @@ export function App() {
                 {/* Description Paragraphs */}
                 <div className="mt-6 flex flex-col gap-4 text-sm leading-relaxed text-white sm:text-base">
                   <p>
-                    IGNITE 2.0 is a national-level innovation platform organized by I HUB School of Learning (IHSL), designed to bring together creative minds, problem-solvers, and aspiring innovators from across India. The ideathon challenges undergraduate and postgraduate students to identify real-world problems and develop innovative solutions using Artificial Intelligence, Robotics, and emerging technologies.
+                    IGNITE 2.0 is a national-level innovation platform organized by I HUB School of Learning (IHSL), designed to bring together creative minds, problem-solvers, and aspiring innovators from across India. The ideathon challenges all innovators to identify real-world problems and develop innovative solutions using Artificial Intelligence, Robotics, and emerging technologies.
                   </p>
                   <p>
                     Through a two-stage competition, participants get the opportunity to present their ideas, receive expert feedback, and transform bold concepts into impactful solutions. The journey culminates in an offline Grand Finale in Kochi, Kerala, where the most promising ideas compete for recognition and exciting prizes.
@@ -916,7 +916,7 @@ export function App() {
             </div>
 
             {/* RIGHT SIDE: Pillars & Perks (Sliding Tabs) */}
-            <div className="flex w-full flex-col lg:w-[50%] lg:pt-4 overflow-hidden min-h-[500px]">
+            <div className="flex w-full flex-col lg:w-[50%] lg:pt-4 min-h-[500px]">
 
               {/* Tab Toggle Switch */}
               <Reveal delay={0.3}>
@@ -952,12 +952,12 @@ export function App() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 20 }}
                       transition={{ duration: 0.3 }}
-                      className="grid gap-x-8 gap-y-12 sm:grid-cols-2"
+                      className="grid gap-x-6 gap-y-10 md:gap-x-8 md:gap-y-12 grid-cols-1 md:grid-cols-2"
                     >
                       {[
-                        { title: 'Test Ideas', desc: 'Work with mentors on real-world problems.', icon: FaShareAlt },
-                        { title: 'Showcase', desc: 'Gain feedback & credibility from investors.', icon: FaEye },
-                        { title: 'Network', desc: 'Expand your network in the AI ecosystem.', icon: FaNetworkWired },
+                        { title: 'Test Ideas', desc: 'Collaborate with industry experts and mentors to validate your concepts against real-world scenarios. Refine your technological approach and ensure your ideas are practically viable and scalable.', icon: FaShareAlt },
+                        { title: 'Showcase', desc: 'Present your prototypes to a panel of esteemed judges, investors, and industry leaders. Receive constructive feedback, build credibility, and uncover potential funding opportunities.', icon: FaEye },
+                        { title: 'Network', desc: 'Connect with like-minded innovators, seasoned professionals, and key stakeholders in the AI and robotics ecosystem. Forge strategic partnerships to turn visionary ideas into reality.', icon: FaNetworkWired },
                       ].map((item) => {
                         const Icon = item.icon
                         return (
@@ -985,19 +985,37 @@ export function App() {
                       className="flex flex-col"
                     >
                       {[
-                        { num: '01', title: 'Identify Problems', desc: 'Focus on high-impact, real-world problems in industry and society, that automation can solve.' },
-                        { num: '02', title: 'Engineer Solutions', desc: 'Conceptualize intelligent systems that leverage robotics and AI at the core.' },
-                        { num: '03', title: 'Create an Impact', desc: 'Build prototypes that have the potential to scale and redefine human productivity.' },
+                        { 
+                          num: '01', 
+                          title: 'Identify Problems', 
+                          subtitle: 'Identify Real-World Challenges',
+                          desc: 'Focus on high-impact problems across industries that automation can solve. Analyze real needs and lay the foundation for solutions that create measurable value.' 
+                        },
+                        { 
+                          num: '02', 
+                          title: 'Engineer Solutions', 
+                          subtitle: 'Design Intelligent Systems',
+                          desc: 'Transform ideas into practical solutions by combining robotics, AI, and automation. Develop scalable concepts that prioritize efficiency and real-world usability.' 
+                        },
+                        { 
+                          num: '03', 
+                          title: 'Create an Impact', 
+                          subtitle: 'Build Solutions That Matter',
+                          desc: 'Prototype systems to solve real-world challenges and drive meaningful change. Present ideas that are technically sound, scalable, and capable of shaping the future.' 
+                        },
                       ].map((pillar) => (
                         <div key={pillar.num} className="group border-b border-white/5 py-10 first:pt-0 transition-colors hover:border-[#84E325]/30">
-                          <div className="flex flex-col sm:flex-row sm:items-start gap-6 sm:gap-8">
-                            <span className="font-orbitron text-4xl font-black text-white/[0.03] transition-colors group-hover:text-[#84E325]/20">
+                          <div className="flex flex-row items-start gap-4 sm:gap-8">
+                            <span className="font-orbitron text-3xl sm:text-4xl font-black text-white/20 transition-colors group-hover:text-[#84E325]/40">
                               {pillar.num}
                             </span>
                             <div>
-                              <h4 className="mb-2 text-xl font-bold text-white transition-colors group-hover:text-[#84E325]">
+                              <h4 className="text-xl font-bold text-white transition-colors group-hover:text-[#84E325]">
                                 {pillar.title}
                               </h4>
+                              <h5 className="mb-2 mt-1 text-sm font-semibold text-[#84E325]">
+                                {pillar.subtitle}
+                              </h5>
                               <p className="text-sm leading-relaxed text-[#9EB09E]">
                                 {pillar.desc}
                               </p>
@@ -1055,7 +1073,7 @@ export function App() {
               IGNITE Journey
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-sm text-[#9EB09E]">
-              Step-by-step roadmap from registration to the grand 36-hour finale.
+              Step-by-step roadmap from registration to the grand finale.
             </p>
           </Reveal>
 
@@ -1188,7 +1206,7 @@ export function App() {
                 <div className="mt-12 grid grid-cols-2 gap-4 border-t border-white/10 pt-8 sm:grid-cols-4">
                   <div>
                     <p className="font-orbitron text-[10px] font-semibold text-[#84E325]">
-                      VENUE LOCATION
+                      GRAND FINALE VENUE
                     </p>
                     <p className="mt-1 text-xs font-bold text-white">Kochi</p>
                   </div>
@@ -1324,38 +1342,38 @@ export function App() {
 
               <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto text-left">
                 {/* Left Column */}
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-4 sm:gap-6">
                   {/* Phone */}
-                  <a href="tel:+917902899111" className="glow-card flex items-center gap-4 rounded-2xl border border-white/10 bg-[#0a110b]/80 p-6 backdrop-blur-md transition-all hover:border-[#84E325]/40 group">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#84E325]/30 bg-[#84E325]/15 text-[#84E325]">
-                      <FaPhoneAlt className="text-xl" />
+                  <a href="tel:+917902899111" className="glow-card flex items-center gap-3 sm:gap-4 rounded-2xl border border-white/10 bg-[#0a110b]/80 p-4 sm:p-6 backdrop-blur-md transition-all hover:border-[#84E325]/40 group">
+                    <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-[#84E325]/30 bg-[#84E325]/15 text-[#84E325]">
+                      <FaPhoneAlt className="text-base sm:text-xl" />
                     </div>
-                    <div>
-                      <span className="block text-lg font-bold text-white group-hover:text-[#84E325] transition-colors">
+                    <div className="overflow-hidden">
+                      <span className="block text-sm sm:text-base md:text-lg font-bold text-white group-hover:text-[#84E325] transition-colors truncate">
                         +91 7902 899 111
                       </span>
                     </div>
                   </a>
 
                   {/* Address */}
-                  <a href="https://maps.app.goo.gl/sV6ZbqEj6fvFgwHN9?g_st=iw" target="_blank" rel="noreferrer" className="glow-card flex items-center gap-4 rounded-2xl border border-white/10 bg-[#0a110b]/80 p-6 backdrop-blur-md transition-all hover:border-[#84E325]/40 group">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#84E325]/30 bg-[#84E325]/15 text-[#84E325]">
-                      <FaMapMarkerAlt className="text-xl" />
+                  <a href="https://maps.app.goo.gl/sV6ZbqEj6fvFgwHN9?g_st=iw" target="_blank" rel="noreferrer" className="glow-card flex items-center gap-3 sm:gap-4 rounded-2xl border border-white/10 bg-[#0a110b]/80 p-4 sm:p-6 backdrop-blur-md transition-all hover:border-[#84E325]/40 group">
+                    <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-[#84E325]/30 bg-[#84E325]/15 text-[#84E325]">
+                      <FaMapMarkerAlt className="text-base sm:text-xl" />
                     </div>
                     <div>
-                      <p className="block text-sm font-bold text-white group-hover:text-[#84E325] transition-colors leading-relaxed">
+                      <p className="block text-xs sm:text-sm font-bold text-white group-hover:text-[#84E325] transition-colors leading-relaxed">
                         I hub school, Marottichuvadu,<br />Edappally Kerala 682024
                       </p>
                     </div>
                   </a>
 
                   {/* Email */}
-                  <a href="mailto:teamihsl31@gmail.com" className="glow-card flex items-center gap-4 rounded-2xl border border-white/10 bg-[#0a110b]/80 p-6 backdrop-blur-md transition-all hover:border-[#84E325]/40 group">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#84E325]/30 bg-[#84E325]/15 text-[#84E325]">
-                      <FaEnvelope className="text-xl" />
+                  <a href="mailto:teamihsl31@gmail.com" className="glow-card flex items-center gap-3 sm:gap-4 rounded-2xl border border-white/10 bg-[#0a110b]/80 p-4 sm:p-6 backdrop-blur-md transition-all hover:border-[#84E325]/40 group">
+                    <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-[#84E325]/30 bg-[#84E325]/15 text-[#84E325]">
+                      <FaEnvelope className="text-base sm:text-xl" />
                     </div>
-                    <div>
-                      <span className="block text-lg font-bold text-white group-hover:text-[#84E325] transition-colors">
+                    <div className="overflow-hidden">
+                      <span className="block text-sm sm:text-base md:text-lg font-bold text-white group-hover:text-[#84E325] transition-colors truncate">
                         teamihsl31@gmail.com
                       </span>
                     </div>
@@ -1363,38 +1381,38 @@ export function App() {
                 </div>
 
                 {/* Right Column */}
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-4 sm:gap-6">
                   {/* Website */}
-                  <a href="https://ihubschool.com/" target="_blank" rel="noreferrer" className="glow-card flex items-center gap-4 rounded-2xl border border-white/10 bg-[#0a110b]/80 p-6 backdrop-blur-md transition-all hover:border-[#84E325]/40 group">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#84E325]/30 bg-[#84E325]/15 text-[#84E325]">
-                      <FaGlobe className="text-xl" />
+                  <a href="https://ihubschool.com/" target="_blank" rel="noreferrer" className="glow-card flex items-center gap-3 sm:gap-4 rounded-2xl border border-white/10 bg-[#0a110b]/80 p-4 sm:p-6 backdrop-blur-md transition-all hover:border-[#84E325]/40 group">
+                    <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-[#84E325]/30 bg-[#84E325]/15 text-[#84E325]">
+                      <FaGlobe className="text-base sm:text-xl" />
                     </div>
-                    <div>
-                      <span className="block text-lg font-bold text-white group-hover:text-[#84E325] transition-colors">
+                    <div className="overflow-hidden">
+                      <span className="block text-sm sm:text-base md:text-lg font-bold text-white group-hover:text-[#84E325] transition-colors truncate">
                         ihubschool.com
                       </span>
                     </div>
                   </a>
 
                   {/* LinkedIn */}
-                  <a href="https://www.linkedin.com/company/ihubschool/" target="_blank" rel="noreferrer" className="glow-card flex items-center gap-4 rounded-2xl border border-white/10 bg-[#0a110b]/80 p-6 backdrop-blur-md transition-all hover:border-[#84E325]/40 group">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#84E325]/30 bg-[#84E325]/15 text-[#84E325]">
-                      <FaLinkedin className="text-xl" />
+                  <a href="https://www.linkedin.com/company/ihubschool/" target="_blank" rel="noreferrer" className="glow-card flex items-center gap-3 sm:gap-4 rounded-2xl border border-white/10 bg-[#0a110b]/80 p-4 sm:p-6 backdrop-blur-md transition-all hover:border-[#84E325]/40 group">
+                    <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-[#84E325]/30 bg-[#84E325]/15 text-[#84E325]">
+                      <FaLinkedin className="text-base sm:text-xl" />
                     </div>
-                    <div>
-                      <span className="block text-lg font-bold text-white group-hover:text-[#84E325] transition-colors">
+                    <div className="overflow-hidden">
+                      <span className="block text-sm sm:text-base md:text-lg font-bold text-white group-hover:text-[#84E325] transition-colors truncate">
                         I Hub School of Learning
                       </span>
                     </div>
                   </a>
 
                   {/* Instagram */}
-                  <a href="https://www.instagram.com/ihub_school_of_learning/" target="_blank" rel="noreferrer" className="glow-card flex items-center gap-4 rounded-2xl border border-white/10 bg-[#0a110b]/80 p-6 backdrop-blur-md transition-all hover:border-[#84E325]/40 group">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#84E325]/30 bg-[#84E325]/15 text-[#84E325]">
-                      <FaInstagram className="text-xl" />
+                  <a href="https://www.instagram.com/ihub_school_of_learning/" target="_blank" rel="noreferrer" className="glow-card flex items-center gap-3 sm:gap-4 rounded-2xl border border-white/10 bg-[#0a110b]/80 p-4 sm:p-6 backdrop-blur-md transition-all hover:border-[#84E325]/40 group">
+                    <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-[#84E325]/30 bg-[#84E325]/15 text-[#84E325]">
+                      <FaInstagram className="text-base sm:text-xl" />
                     </div>
-                    <div>
-                      <span className="block text-lg font-bold text-white group-hover:text-[#84E325] transition-colors">
+                    <div className="overflow-hidden">
+                      <span className="block text-sm sm:text-base md:text-lg font-bold text-white group-hover:text-[#84E325] transition-colors truncate">
                         ihub_school_of_learning
                       </span>
                     </div>
@@ -1415,7 +1433,7 @@ export function App() {
               </div>
 
               <div className="flex flex-col items-center text-center">
-                <span className="mb-4 text-xs font-bold tracking-widest text-[#8A9A8A] uppercase">Founded By</span>
+                <span className="mb-4 text-xs font-bold tracking-widest text-[#8A9A8A] uppercase">Powered By</span>
                 <a href="https://www.ihubrobotics.com/" target="_blank" rel="noreferrer" className="group flex flex-col items-center">
                   <div className="rounded-xl bg-white p-2.5 shadow-md transition-transform group-hover:scale-105">
                     <img src={ihubResearchLogo} alt="I Hub Research and Robotics Pvt Ltd" className="h-14 w-auto object-contain" />
