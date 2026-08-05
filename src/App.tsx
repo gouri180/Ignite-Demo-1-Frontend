@@ -241,6 +241,8 @@ export function App() {
 
   // Registration Form State
   const [formStep, setFormStep] = useState(1)
+  const [mobileStep, setMobileStep] = useState(1)
+  const [mobileMemberStep, setMobileMemberStep] = useState(0)
   const [formData, setFormData] = useState({
     teamName: '',
     leaderName: '',
@@ -393,7 +395,7 @@ export function App() {
 
     setTimeout(() => {
       setAcceptedTerms(false)
-      setFormStep(1)
+      setFormStep(1); setMobileStep(1); setMobileMemberStep(0)
       setFormData({
         teamName: '',
         leaderName: '',
@@ -705,7 +707,7 @@ export function App() {
               transition={{ duration: 0.7, delay: 0.35 }}
               className="mx-auto mt-6 max-w-3xl text-base text-[#A8BAA8] sm:text-lg lg:text-xl leading-relaxed"
             >
-              The definitive AI & Robotics hackathon for the next generation of engineers.<br className="hidden sm:block" />
+              The definitive AI & Robotics ideathon for the next generation of engineers.<br className="hidden sm:block" />
               Solve real-world challenges through cutting-edge automation and intelligent systems.
             </motion.p>
 
@@ -1533,7 +1535,7 @@ export function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={handleReturnToHome}
-              className="absolute inset-0 bg-black/80 backdrop-blur-md"
+              className="absolute inset-0 bg-black/90 sm:bg-black/80 sm:backdrop-blur-md"
             />
 
             {/* Modal Card */}
@@ -1541,7 +1543,7 @@ export function App() {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className={`relative z-10 w-full max-w-3xl overflow-hidden rounded-3xl p-10 transition-all duration-700 ${registeredSuccess
+              className={`relative z-10 w-[90%] sm:w-full max-w-3xl max-h-[85vh] overflow-y-auto rounded-2xl sm:rounded-3xl p-5 sm:p-10 transition-all duration-700 ${registeredSuccess
                 ? 'border-2 border-[#84E325] bg-[#07130a] shadow-[0_0_90px_rgba(132,227,37,0.5)]'
                 : 'border border-[#84E325]/40 bg-[#080f09] shadow-[0_0_60px_rgba(132,227,37,0.25)]'
                 }`}
@@ -1657,7 +1659,7 @@ export function App() {
                   >
                     <div className="mb-8">
                       <span className="font-orbitron text-xs font-bold tracking-widest text-[#84E325]">
-                        IGNITE 2.0 HACKATHON
+                        IGNITE 2.0 IDEATHON
                       </span>
                       <h3 className="mt-2 text-3xl font-extrabold text-white tracking-tight">Register Your Team</h3>
                       <p className="mt-2 text-sm text-[#9EB09E]">
@@ -1679,7 +1681,7 @@ export function App() {
                     <form onSubmit={handleRegisterSubmit} className="space-y-4">
                       {formStep === 1 && (
                         <>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${mobileStep === 1 ? "grid" : "hidden md:grid"}`}>
                             <div>
                               <label className="block text-xs font-semibold tracking-wider text-gray-300 mb-2">
                                 Team Name
@@ -1695,23 +1697,25 @@ export function App() {
                             </div>
 
                             <div>
-                              <label className="block text-xs font-semibold tracking-wider text-gray-300 mb-2">
+                              <label className="block text-xs font-semibold tracking-wider text-gray-300 mb-3">
                                 Team Size
                               </label>
-                              <select
-                                value={formData.members}
-                                onChange={(e) => setFormData({ ...formData, members: e.target.value })}
-                                className="w-full rounded-xl border border-white/10 bg-[#0d180f] px-5 py-3 text-base text-white focus:border-[#84E325] focus:outline-none"
-                              >
-                                <option value="1">1 Member</option>
-                                <option value="2">2 Members</option>
-                                <option value="3">3 Members</option>
-                                <option value="4">4 Members</option>
-                              </select>
+                              <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+                                {['1', '2', '3', '4'].map(num => (
+                                  <button
+                                    type="button"
+                                    key={num}
+                                    onClick={() => setFormData({ ...formData, members: num })}
+                                    className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all border ${formData.members === num ? 'border-[#84E325] bg-[#84E325]/10 text-[#84E325]' : 'border-white/10 bg-white/5 text-gray-400 hover:border-white/30'}`}
+                                  >
+                                    {num} Member{num > '1' ? 's' : ''}
+                                  </button>
+                                ))}
+                              </div>
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${mobileStep === 2 ? "grid" : "hidden md:grid"}`}>
                             <div>
                               <label className="block text-xs font-semibold tracking-wider text-gray-300 mb-2">
                                 Leader Name
@@ -1760,22 +1764,23 @@ export function App() {
                           </div>
 
 
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${mobileStep === 3 ? "grid" : "hidden md:grid"}`}>
                             <div>
-                              <label className="block text-xs font-semibold tracking-wider text-gray-300 mb-2">
+                              <label className="block text-xs font-semibold tracking-wider text-gray-300 mb-3">
                                 Category
                               </label>
-                              <select
-                                value={formData.category}
-                                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                                className="w-full rounded-xl border border-white/10 bg-[#0d180f] px-5 py-3 text-base text-white focus:border-[#84E325] focus:outline-none"
-                              >
-                                <option value="School Student">School Student</option>
-                                <option value="UG Student">UG Student</option>
-                                <option value="PG Student">PG Student</option>
-                                <option value="Organisation">Organisation</option>
-                                <option value="Others">Others (Innovators/Enthusiasts)</option>
-                              </select>
+                              <div className="flex flex-wrap gap-2">
+                                {['School Student', 'UG Student', 'PG Student', 'Organisation', 'Others'].map(cat => (
+                                  <button
+                                    type="button"
+                                    key={cat}
+                                    onClick={() => setFormData({ ...formData, category: cat })}
+                                    className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all border ${formData.category === cat ? 'border-[#84E325] bg-[#84E325]/10 text-[#84E325]' : 'border-white/10 bg-white/5 text-gray-400 hover:border-white/30'}`}
+                                  >
+                                    {cat === 'Others' ? 'Others' : cat}
+                                  </button>
+                                ))}
+                              </div>
                             </div>
 
                             {formData.category !== 'Others' && (
@@ -1797,33 +1802,98 @@ export function App() {
                           </div>
 
                           <div className="pt-3">
-                            <button
-                              type="button"
-                              onClick={() => {
-                                // Basic validation before next step
-                                if (!formData.teamName.trim() || !formData.leaderName.trim() || !formData.email.trim() || !formData.phone.trim()) {
-                                  setFormError('Please fill out all required team details.');
-                                  return;
-                                }
-                                if (formData.phone.length !== 10) {
-                                  setFormError('Please enter a valid 10-digit phone number for the leader.');
-                                  return;
-                                }
-                                if (formData.category !== 'Others' && !formData.institutionName.trim()) {
-                                  setFormError(`Please enter your ${formData.category === 'School Student' ? 'School' : formData.category === 'Organisation' ? 'Company' : 'College'} Name.`);
-                                  return;
-                                }
-                                setFormError(null);
-                                if (parseInt(formData.members, 10) > 1) {
-                                  setFormStep(2);
-                                } else {
-                                  setFormStep(3);
-                                }
-                              }}
-                              className="w-full rounded-xl py-4 text-sm font-bold uppercase tracking-widest transition-all glow-lime-btn cursor-pointer hover:scale-[1.02]"
-                            >
-                              Next Step
-                            </button>
+                            {/* Mobile Navigation */}
+                            <div className="flex gap-4 md:hidden">
+                              {mobileStep > 1 && (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setFormError(null);
+                                    setMobileStep(mobileStep - 1);
+                                  }}
+                                  className="w-1/3 rounded-xl border border-white/20 bg-transparent py-4 text-sm font-bold uppercase tracking-widest text-white transition-all hover:bg-white/5 cursor-pointer"
+                                >
+                                  Back
+                                </button>
+                              )}
+                              
+                              {mobileStep < 3 ? (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    if (mobileStep === 1 && !formData.teamName.trim()) {
+                                      setFormError('Please enter a Team Name.');
+                                      return;
+                                    }
+                                    if (mobileStep === 2) {
+                                      if (!formData.leaderName.trim() || !formData.email.trim() || !formData.phone.trim()) {
+                                        setFormError('Please fill out all Leader details.');
+                                        return;
+                                      }
+                                      if (formData.phone.length !== 10) {
+                                        setFormError('Please enter a valid 10-digit phone number.');
+                                        return;
+                                      }
+                                    }
+                                    setFormError(null);
+                                    setMobileStep(mobileStep + 1);
+                                  }}
+                                  className={`${mobileStep === 1 ? 'w-full' : 'w-2/3'} rounded-xl py-4 text-sm font-bold uppercase tracking-widest transition-all glow-lime-btn cursor-pointer hover:scale-[1.02]`}
+                                >
+                                  Next
+                                </button>
+                              ) : (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    if (formData.category !== 'Others' && !formData.institutionName.trim()) {
+                                      setFormError(`Please enter your ${formData.category === 'School Student' ? 'School' : formData.category === 'Organisation' ? 'Company' : 'College'} Name.`);
+                                      return;
+                                    }
+                                    setFormError(null);
+                                    if (parseInt(formData.members, 10) > 1) {
+                                      setFormStep(2);
+                                    } else {
+                                      setFormStep(3);
+                                    }
+                                  }}
+                                  className="w-2/3 rounded-xl py-4 text-sm font-bold uppercase tracking-widest transition-all glow-lime-btn cursor-pointer hover:scale-[1.02]"
+                                >
+                                  Next Step
+                                </button>
+                              )}
+                            </div>
+
+                            {/* Desktop Navigation */}
+                            <div className="hidden md:block">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  // Basic validation before next step
+                                  if (!formData.teamName.trim() || !formData.leaderName.trim() || !formData.email.trim() || !formData.phone.trim()) {
+                                    setFormError('Please fill out all required team details.');
+                                    return;
+                                  }
+                                  if (formData.phone.length !== 10) {
+                                    setFormError('Please enter a valid 10-digit phone number for the leader.');
+                                    return;
+                                  }
+                                  if (formData.category !== 'Others' && !formData.institutionName.trim()) {
+                                    setFormError(`Please enter your ${formData.category === 'School Student' ? 'School' : formData.category === 'Organisation' ? 'Company' : 'College'} Name.`);
+                                    return;
+                                  }
+                                  setFormError(null);
+                                  if (parseInt(formData.members, 10) > 1) {
+                                    setFormStep(2);
+                                  } else {
+                                    setFormStep(3);
+                                  }
+                                }}
+                                className="w-full rounded-xl py-4 text-sm font-bold uppercase tracking-widest transition-all glow-lime-btn cursor-pointer hover:scale-[1.02]"
+                              >
+                                Next Step
+                              </button>
+                            </div>
                           </div>
                         </>
                       )}
@@ -1834,7 +1904,7 @@ export function App() {
                             <div className="p-4 rounded-xl border border-white/10 bg-[#0d180f]">
                               <h4 className="text-xs font-bold text-[#84E325] mb-3 uppercase tracking-wider">Team Members Details</h4>
                               {teamMembers.slice(0, parseInt(formData.members, 10) - 1).map((member, index) => (
-                                <div key={index} className="mb-4 last:mb-0 border-b border-white/5 pb-4 last:border-0 last:pb-0">
+                                <div key={index} className={`mb-4 last:mb-0 border-b border-white/5 pb-4 last:border-0 last:pb-0 ${mobileMemberStep === index ? "block" : "hidden md:block"}`}>
                                   <p className="text-[10px] text-gray-400 mb-2 uppercase">Member {index + 1}</p>
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     <input
@@ -1881,35 +1951,99 @@ export function App() {
                             </div>
                           )}
 
-                          <div className="pt-3 flex gap-4">
-                            <button
-                              type="button"
-                              onClick={() => setFormStep(1)}
-                              className="w-1/3 rounded-xl border border-white/20 bg-transparent py-4 text-sm font-bold uppercase tracking-widest text-white transition-all hover:bg-white/5 cursor-pointer"
-                            >
-                              Back
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const membersToValidate = teamMembers.slice(0, parseInt(formData.members, 10) - 1);
-                                const isMembersValid = membersToValidate.every(m => m.name.trim() && m.phone.trim() && m.email.trim());
-                                if (!isMembersValid) {
-                                  setFormError('Please fill out all team member details.');
-                                  return;
-                                }
-                                const isPhoneValid = membersToValidate.every(m => m.phone.length === 10);
-                                if (!isPhoneValid) {
-                                  setFormError('Please enter valid 10-digit phone numbers for all team members.');
-                                  return;
-                                }
-                                setFormError(null);
-                                setFormStep(3);
-                              }}
-                              className="w-2/3 rounded-xl py-4 text-sm font-bold uppercase tracking-widest transition-all glow-lime-btn cursor-pointer hover:scale-[1.02]"
-                            >
-                              Next
-                            </button>
+                          <div className="pt-3">
+                            <div className="flex gap-4 md:hidden">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setFormError(null);
+                                  if (mobileMemberStep > 0) {
+                                    setMobileMemberStep(mobileMemberStep - 1);
+                                  } else {
+                                    setFormStep(1);
+                                    setMobileStep(3); setMobileMemberStep(0);
+                                  }
+                                }}
+                                className="w-1/3 rounded-xl border border-white/20 bg-transparent py-4 text-sm font-bold uppercase tracking-widest text-white transition-all hover:bg-white/5 cursor-pointer"
+                              >
+                                Back
+                              </button>
+                              
+                              {mobileMemberStep < parseInt(formData.members, 10) - 2 ? (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const m = teamMembers[mobileMemberStep];
+                                    if (!m.name.trim() || !m.phone.trim() || !m.email.trim()) {
+                                      setFormError('Please fill out all member details.');
+                                      return;
+                                    }
+                                    if (m.phone.length !== 10) {
+                                      setFormError('Please enter a valid 10-digit phone number.');
+                                      return;
+                                    }
+                                    setFormError(null);
+                                    setMobileMemberStep(mobileMemberStep + 1);
+                                  }}
+                                  className="w-2/3 rounded-xl py-4 text-sm font-bold uppercase tracking-widest transition-all glow-lime-btn cursor-pointer hover:scale-[1.02]"
+                                >
+                                  Next
+                                </button>
+                              ) : (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const membersToValidate = teamMembers.slice(0, parseInt(formData.members, 10) - 1);
+                                    const isMembersValid = membersToValidate.every(m => m.name.trim() && m.phone.trim() && m.email.trim());
+                                    if (!isMembersValid) {
+                                      setFormError('Please fill out all team member details.');
+                                      return;
+                                    }
+                                    const isPhoneValid = membersToValidate.every(m => m.phone.length === 10);
+                                    if (!isPhoneValid) {
+                                      setFormError('Please enter valid 10-digit phone numbers for all team members.');
+                                      return;
+                                    }
+                                    setFormError(null);
+                                    setFormStep(3);
+                                  }}
+                                  className="w-2/3 rounded-xl py-4 text-sm font-bold uppercase tracking-widest transition-all glow-lime-btn cursor-pointer hover:scale-[1.02]"
+                                >
+                                  Next Step
+                                </button>
+                              )}
+                            </div>
+                            
+                            <div className="hidden md:flex gap-4">
+                              <button
+                                type="button"
+                                onClick={() => { setFormStep(1); setMobileStep(3); setMobileMemberStep(0); }}
+                                className="w-1/3 rounded-xl border border-white/20 bg-transparent py-4 text-sm font-bold uppercase tracking-widest text-white transition-all hover:bg-white/5 cursor-pointer"
+                              >
+                                Back
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const membersToValidate = teamMembers.slice(0, parseInt(formData.members, 10) - 1);
+                                  const isMembersValid = membersToValidate.every(m => m.name.trim() && m.phone.trim() && m.email.trim());
+                                  if (!isMembersValid) {
+                                    setFormError('Please fill out all team member details.');
+                                    return;
+                                  }
+                                  const isPhoneValid = membersToValidate.every(m => m.phone.length === 10);
+                                  if (!isPhoneValid) {
+                                    setFormError('Please enter valid 10-digit phone numbers for all team members.');
+                                    return;
+                                  }
+                                  setFormError(null);
+                                  setFormStep(3);
+                                }}
+                                className="w-2/3 rounded-xl py-4 text-sm font-bold uppercase tracking-widest transition-all glow-lime-btn cursor-pointer hover:scale-[1.02]"
+                              >
+                                Next Step
+                              </button>
+                            </div>
                           </div>
                         </>
                       )}
@@ -1939,7 +2073,7 @@ export function App() {
                               >
                                 Terms & Conditions
                               </button>{' '}
-                              and rules of IGNITE 2.0 Hackathon.
+                              and rules of IGNITE 2.0 Ideathon.
                             </label>
                           </div>
 
@@ -1982,7 +2116,7 @@ export function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowTermsModal(false)}
-              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/90 sm:bg-black/80 sm:backdrop-blur-sm"
             />
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 10 }}
@@ -1999,7 +2133,7 @@ export function App() {
               <div className="mt-4 max-h-60 overflow-y-auto text-xs text-gray-300 space-y-2.5 pr-2 leading-relaxed">
                 <p>1. <strong>Team Composition:</strong> All team members must be registered under a single team leader submission.</p>
                 <p>2. <strong>Originality:</strong> All ideas and prototype submissions must consist of original work developed for IGNITE 2.0.</p>
-                <p>3. <strong>Code of Conduct:</strong> Participants must maintain professional and ethical standards throughout the hackathon.</p>
+                <p>3. <strong>Code of Conduct:</strong> Participants must maintain professional and ethical standards throughout the ideathon.</p>
                 <p>4. <strong>Evaluation:</strong> Shortlisting decisions by panel judges and organizers are final.</p>
                 <p>5. <strong>Confirmation:</strong> Official pass and updates will be dispatched to the team leader's registered email address.</p>
               </div>
