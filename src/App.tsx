@@ -762,7 +762,7 @@ export function App() {
                 {/* Description Paragraphs */}
                 <div className="mt-6 flex flex-col gap-4 text-sm leading-relaxed text-white sm:text-base">
                   <p>
-                    IGNITE 2.0 is a national-level innovation platform organized by I HUB School of Learning (IHSL), designed to bring together creative minds, problem-solvers, and aspiring innovators from across India. The ideathon challenges all innovators to identify real-world problems and develop innovative solutions using Artificial Intelligence, Robotics, and emerging technologies.
+                    IGNITE 2.0 is a national-level innovation platform organized by I HUB School of Learning (IHSL), designed to bring together creative minds, problem-solvers, and aspiring innovators across India. The ideathon challenges all innovators to identify real-world problems and develop innovative solutions using Artificial Intelligence, Robotics, and emerging technologies.
                   </p>
                   <p>
                     Through a two-stage competition, participants get the opportunity to present their ideas, receive expert feedback, and transform bold concepts into impactful solutions. The journey culminates in an offline Grand Finale in Kochi, Kerala, where the most promising ideas compete for recognition and exciting prizes.
@@ -987,23 +987,23 @@ export function App() {
                       className="flex flex-col"
                     >
                       {[
-                        { 
-                          num: '01', 
-                          title: 'Identify Problems', 
+                        {
+                          num: '01',
+                          title: 'Identify Problems',
                           subtitle: 'Identify Real-World Challenges',
-                          desc: 'Focus on high-impact problems across industries that automation can solve. Analyze real needs and lay the foundation for solutions that create measurable value.' 
+                          desc: 'Focus on high-impact problems across industries that automation can solve. Analyze real needs and lay the foundation for solutions that create measurable value.'
                         },
-                        { 
-                          num: '02', 
-                          title: 'Engineer Solutions', 
+                        {
+                          num: '02',
+                          title: 'Engineer Solutions',
                           subtitle: 'Design Intelligent Systems',
-                          desc: 'Transform ideas into practical solutions by combining robotics, AI, and automation. Develop scalable concepts that prioritize efficiency and real-world usability.' 
+                          desc: 'Transform ideas into practical solutions by combining robotics, AI, and automation. Develop scalable concepts that prioritize efficiency and real-world usability.'
                         },
-                        { 
-                          num: '03', 
-                          title: 'Create an Impact', 
+                        {
+                          num: '03',
+                          title: 'Create an Impact',
                           subtitle: 'Build Solutions That Matter',
-                          desc: 'Prototype systems to solve real-world challenges and drive meaningful change. Present ideas that are technically sound, scalable, and capable of shaping the future.' 
+                          desc: 'Prototype systems to solve real-world challenges and drive meaningful change. Present ideas that are technically sound, scalable, and capable of shaping the future.'
                         },
                       ].map((pillar) => (
                         <div key={pillar.num} className="group border-b border-white/5 py-10 first:pt-0 transition-colors hover:border-[#84E325]/30">
@@ -1816,7 +1816,7 @@ export function App() {
                                   Back
                                 </button>
                               )}
-                              
+
                               {mobileStep < 3 ? (
                                 <button
                                   type="button"
@@ -1968,7 +1968,7 @@ export function App() {
                               >
                                 Back
                               </button>
-                              
+
                               {mobileMemberStep < parseInt(formData.members, 10) - 2 ? (
                                 <button
                                   type="button"
@@ -2013,7 +2013,7 @@ export function App() {
                                 </button>
                               )}
                             </div>
-                            
+
                             <div className="hidden md:flex gap-4">
                               <button
                                 type="button"
